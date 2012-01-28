@@ -19,4 +19,4 @@ cat > star.h << EOF
 #define MSHookMessageEx(class, selector, repl, orig) [Star hookSelector:selector inClass:class withImp:repl andOrig:orig]
 EOF
 echo '#import "star.h"' 
-logos.pl $1 | sed 's/#include <substrate.h>//g'
+/opt/theos/bin/logos.pl $1 | sed 's/#include <substrate.h>//g'

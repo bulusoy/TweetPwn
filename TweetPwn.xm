@@ -3,24 +3,25 @@
 %class TMComposeWindowController
 %class TMComposeWindow
 %class TMButton
+
 // Coming Soon.
 /*
 %hook TMTextView
 - (void) keyDown:(NSEvent *)event {
-if([[self delegate] isKindOfClass:[$TMComposeWindowController class]]){
-if([event keyCode]==48){
-NSLog(@"Got a tab keyevent", [event keyCode]);
-NSTextStorage *storage = [self textStorage];
-[storage beginEditing];
-NSAttributedString *string = [[NSAttributedString alloc] initWithString:@"Ohaitar!"];
-[storage appendAttributedString:string];
-[string release];
-[storage endEditing];
-[[self delegate] textDidChange:nil];
-return;
-}
-}
-%orig;
+	if([[self delegate] isKindOfClass:[$TMComposeWindowController class]]){
+		if([event keyCode]==48){
+			NSLog(@"Got a tab keyevent", [event keyCode]);
+			NSTextStorage *storage = [self textStorage];
+			[storage beginEditing];
+			NSAttributedString *string = [[NSAttributedString alloc] initWithString:@"Ohaitar!"];
+			[storage appendAttributedString:string];
+			[string release];
+			[storage endEditing];
+			[[self delegate] textDidChange:nil];
+			return;
+		}
+	}
+	%orig;
 }
 %end
 */
@@ -38,17 +39,18 @@ return;
 		NSAlert* alert = [[NSAlert alloc] init];
 		[alert addButtonWithTitle:@"Dismiss"];
 		[alert setMessageText:@"iTunes isn't running"];
-		[alert setInformativeText:@"So, don't be stupid. You aren't playing anything."];
+		[alert setInformativeText:@"So, don't be stupid. You aren't playing anything. ~mbilker"];
 		[alert setAlertStyle:NSWarningAlertStyle];
 		[alert beginSheetModalForWindow:[self composeWindow] modalDelegate:nil didEndSelector:NULL contextInfo:nil];
 		[alert release];
 		return;
 	}
 	
-	NSLog(@"#nowplaying %@ by %@", [[iTunes currentTrack] name], [[iTunes currentTrack] artist]);
+	NSLog(@"#NowPlaying %@ by %@ @ %i kbps", [[iTunes currentTrack] name], [[iTunes currentTrack] artist], [[iTunes currentTrack] bitRate]);
 	
 	id track = [[iTunes currentTrack] name];
 	id artist = [[iTunes currentTrack] artist];
+	id bitrate = [[iTunes currentTrack] bitRate];
 	
 	if (track == nil && artist == nil)
 	{
@@ -56,7 +58,7 @@ return;
 		NSAlert* alert = [[NSAlert alloc] init];
 		[alert addButtonWithTitle:@"Dismiss"];
 		[alert setMessageText:@"*Cough*"];
-		[alert setInformativeText:@"Don't be stupid. iTunes is running but you aren't playing anything."];
+		[alert setInformativeText:@"Don't be stupid. iTunes is running but you aren't playing anything. ~mbilker"];
 		[alert setAlertStyle:NSWarningAlertStyle];
 		[alert beginSheetModalForWindow:[self composeWindow] modalDelegate:nil didEndSelector:NULL contextInfo:nil];
 		[alert release];
@@ -69,8 +71,12 @@ return;
 	if (artist == nil)
 	{
 		artist = @"Unknown";
-	}	
-	[[[self composeWindow] textView] setString:[NSString stringWithFormat:@"#nowplaying %@ by %@ ", track, artist, nil]];
+	}
+	if (bitrate == nil)
+	{
+		bitrate = 0;
+	}
+	[[[self composeWindow] textView] setString:[NSString stringWithFormat:@"#NowPlaying %@ by %@ @ %i kbps", track, artist, bitrate, nil]];
 	[self textDidChange:nil];
 	return;
 }

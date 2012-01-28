@@ -1,1 +1,1 @@
-DYLD_INSERT_LIBRARIES=TweetPwn.dylib /Applications/Twitter.app/Contents/MacOS/Twitter
+DYLD_INSERT_LIBRARIES="$HOME/.MacOSX/ThinLoader.dylib" /Applications/Twitter.app/Contents/MacOS/Twitter
