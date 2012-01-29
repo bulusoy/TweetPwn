@@ -2,7 +2,7 @@ FILE=TweetPwn.xm
 NAME=TweetPwn.dylib
 ADDONS=TweetPwn.plist
 CC=g++
-FLAGS=-lobjc -dynamiclib -framework Foundation -framework ScriptingBridge -framework AppKit -o $(NAME)
+FLAGS=-arch x86_64 -arch i386 -lobjc -dynamiclib -framework Foundation -framework ScriptingBridge -framework AppKit -o $(NAME)
 all:
 	@echo "Parsing code..."
 	@./LogosToStar.sh $(FILE) >fix.m
