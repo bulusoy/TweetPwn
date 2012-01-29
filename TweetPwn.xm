@@ -1,3 +1,6 @@
+// mbilker's modified TweetPwn
+// Originally made by @qwertyoruiop
+
 #import "iTunes.h"
 #import "TweetPwn.h"
 %class TMComposeWindowController
@@ -46,11 +49,11 @@
 		return;
 	}
 	
-	NSLog(@"#NowPlaying %@ by %@ @ %i kbps", [[iTunes currentTrack] name], [[iTunes currentTrack] artist], [[iTunes currentTrack] bitRate]);
+	NSLog(@"#np %@ by %@ from %@ @ %i kbps", [[iTunes currentTrack] name], [[iTunes currentTrack] artist], [[iTunes currentTrack] album], [[iTunes currentTrack] bitRate]);
 	
 	id track = [[iTunes currentTrack] name];
 	id artist = [[iTunes currentTrack] artist];
-	id bitrate = [[iTunes currentTrack] bitRate];
+	id album = [[iTunes currentTrack] album];
 	
 	if (track == nil && artist == nil)
 	{
@@ -72,11 +75,11 @@
 	{
 		artist = @"Unknown";
 	}
-	if (bitrate == nil)
+	if (album == nil)
 	{
-		bitrate = 0;
+		album = @"Unknown";
 	}
-	[[[self composeWindow] textView] setString:[NSString stringWithFormat:@"#NowPlaying %@ by %@ @ %i kbps", track, artist, bitrate, nil]];
+	[[[self composeWindow] textView] setString:[NSString stringWithFormat:@"#np %@ by %@ from %@ @ %i kbps", track, artist, album, [[iTunes currentTrack] bitRate], nil]];
 	[self textDidChange:nil];
 	return;
 }
